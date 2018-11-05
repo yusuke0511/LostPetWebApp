@@ -1,0 +1,48 @@
+@import helper._
+@import forms.PetInfoRegistorForm
+@(errorFlg:Boolean
+    ,petInfoList:List[Map[String,Any]])(implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider)
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+@main("ペット捜索情報", assetsFinder) {
+<h2>迷子ペット情報画面</h2>
+@if(errorFlg) {
+表示されているペット情報はすでに削除されている可能性があります。
+} else {
+<br/>
+<div class="container">
+    @for(d <- petInfoList) {
+    <img src="/assets/@d("image_path")" width="300" height="300">
+    <br/>
+    <div class="form-group">
+        <label id="nameLabel" class="control-label col-lg-4">ペットの名前</label>
+        @d("name")
+    </div>
+    <div class="form-group">
+        <label id="petKindLabel" class="control-label col-lg-4">ペットの種類</label>
+        @d("kind")
+    </div>
+    <div class="form-group">
+        <label id="genderLabel" class="control-label col-lg-4">ペットの性別</label>
+        @d("gender")
+    </div>
+    <div class="form-group">
+        <label id="featureLabel" class="control-label col-lg-4">ペットの特徴</label>
+        <div>
+            @d("feature")
+        </div>
+    </div>
+    <div class="from-group">
+        <label id="prefLabel" class="control-label col-lg-4">都道府県</label>
+        @d("pref")
+    </div>
+    <div class="form-group">
+        <label id="lostPlaceLabel" class="control-label col-lg-4">迷子になった場所</label>
+        @d("place")
+    </div>
+    }
+</div>
+}
+}
+

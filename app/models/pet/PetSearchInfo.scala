@@ -10,7 +10,7 @@ import anorm.SqlParser._
 @Singleton
 class PetSearchInfo @Inject()(db: Database) {
 
-  val parser = int("id") ~ str("name") ~ int("gender") ~ int("kind") ~ str("feature") ~ int("pref") ~ str("place") ~ str("image_path") ~ date("create_time") ~ date("update_time")
+  val parser = long("id") ~ str("name") ~ int("gender") ~ int("kind") ~ str("feature") ~ int("pref") ~ str("place") ~ str("image_path") ~ date("create_time") ~ date("update_time")
   val mapper = parser.map {
     case id ~ name ~ gender ~ kind ~ feature ~ pref ~ place ~ image_path ~ create_time ~ update_time
       => Map("id" -> id, "name" -> name, "gender" -> gender, "kind" -> kind,
@@ -21,6 +21,13 @@ class PetSearchInfo @Inject()(db: Database) {
   def getPetInfoList: List[Map[String,Any]] = {
     db.withConnection { implicit c =>
       SQL("SELECT * FROM pet_search_info ORDER BY id desc")
+        .as(mapper.*)
+    }
+  }
+
+  def getPetInfoList(id:Int): List[Map[String,Any]] = {
+    db.withConnection { implicit c =>
+      SQL("SELECT * FROM pet_search_info WHERE id = {id} ORDER BY id desc").on('id -> id)
         .as(mapper.*)
     }
   }

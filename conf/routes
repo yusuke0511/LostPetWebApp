@@ -22,5 +22,6 @@ GET     /maintenance controllers.MaintenanceController.init
 
 GET     /petInfoList    controllers.PetInfoListController.init
 GET     /petInfoRegistor    controllers.PetInfoRegistorController.init
+GET     /petInfoRegistor/:id    controllers.PetInfoDisplayController.init(id:Int)
 POST    /regist             controllers.PetInfoRegistorController.regist
 GET     /petInfoRegistorComplete               controllers.PetInfoRegistorController.complete
