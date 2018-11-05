@@ -1,0 +1,9 @@
+@(message: String)(implicit assetsFinder: AssetsFinder)
+<META NAME="robots" CONTENT="none">
+@main("トップ画面", assetsFinder) {
+    <label id="LoginMessage">トップ画面</label><br/>
+    <a href="http://localhost:9000/petInfoList">一覧画面</a><br/>
+    <a href="http://localhost:9000/petInfoRegistor">登録画面</a><br/>
+    <a href="http://localhost:9000/maintenance">工事中画面</a>
+}
+

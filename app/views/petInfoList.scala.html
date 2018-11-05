@@ -1,0 +1,60 @@
+@import helper._
+@import forms.PetInfoRegistorForm
+@(errorFlg:Boolean
+,petInfoList:List[Map[String,Any]])(implicit assetsFinder: AssetsFinder)
+
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<style>
+    #nav {
+  list-style: none;
+  display: flex;
+}
+
+#nav li {
+  width: 140px;
+  text-align: center;
+  background-color: #333;
+  height: 50px;
+  line-height: 50px;
+  margin-right: 2px;
+}
+
+#nav li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  padding: 20px;
+}
+</style>
+@main("ペット捜索情報入力", assetsFinder) {
+<ul id="nav">
+    <li><a href="../">戻る</a></li>
+    <li><a href="/petInfoRegistor">新規登録</a></li>
+</ul>
+<h2>登録画面</h2>
+@if(errorFlg) {
+迷子になったペットの情報を登録してください。
+} else {
+入力内容に誤りがあります。内容を確認して再度登録してください。
+}
+
+<br/>
+@if(petInfoList.length == 0) {
+該当するデータがありません。
+} else {
+    <table>
+        @for(d <- petInfoList) {
+        <tr>
+            <td><img src="/assets/@d("image_path")" width="100" height="100"></td>
+            <td>@d("name")</td>
+            <td>@d("kind")</td>
+        </tr>
+        }
+    </table>
+}
+<br/>
+<table>
+
+</table>
+}
+
