@@ -13,13 +13,13 @@ GET     /message                    controllers.AsyncController.message
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public/tmp/picture", file: Asset)
 
+# static file for requests
+GET /kiyaku    controllers.Assets.at(path="/public", file="/html/kiyaku.html")
+
+# Applocation
 GET     /login  controllers.LoginController.index
 GET     /test   controllers.TestViewsController.index
-
 GET     /maintenance controllers.MaintenanceController.init
-
-
-
 GET     /petInfoList    controllers.PetInfoListController.init
 GET     /petInfoRegistor    controllers.PetInfoRegistorController.init
 GET     /petInfoRegistor/:id    controllers.PetInfoDisplayController.init(id:Int)

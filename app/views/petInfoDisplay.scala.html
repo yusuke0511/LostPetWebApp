@@ -21,11 +21,11 @@
     </div>
     <div class="form-group">
         <label id="petKindLabel" class="control-label col-lg-4">ペットの種類</label>
-        @d("kind")
+        @util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))
     </div>
     <div class="form-group">
         <label id="genderLabel" class="control-label col-lg-4">ペットの性別</label>
-        @d("gender")
+        @util.MessageUtil.getPropetyMessage("gender." + d("gender"))
     </div>
     <div class="form-group">
         <label id="featureLabel" class="control-label col-lg-4">ペットの特徴</label>
@@ -35,7 +35,7 @@
     </div>
     <div class="from-group">
         <label id="prefLabel" class="control-label col-lg-4">都道府県</label>
-        @d("pref")
+        @util.MessageUtil.getPropetyMessage("pref." + d("pref"))
     </div>
     <div class="form-group">
         <label id="lostPlaceLabel" class="control-label col-lg-4">迷子になった場所</label>
@@ -43,6 +43,7 @@
     </div>
     }
 </div>
+<input type="button" class="btn btn-primary" value="一覧画面へ戻る" onClick="location.href='/petInfoList'">
 }
 }
 

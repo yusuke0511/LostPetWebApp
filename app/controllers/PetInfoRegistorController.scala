@@ -9,6 +9,9 @@ import forms.PetInfoRegistorForm
 import play.api.Play._
 import play.api.i18n.I18nSupport
 
+import scala.sys.process
+import scala.sys.process.Process
+
 /**
   * ペット迷子情報登録画面
   * @param gender
@@ -69,10 +72,12 @@ class PetInfoRegistorController @Inject()(gender:Gender, petKind:PetKind, petSea
             val juDate = new java.util.Date()
             val dt = new DateTime(juDate)
 
-
             val filename = dt.getMillis.toString + "_" +  picture.filename
             val contentType = picture.contentType
+
             picture.ref.moveTo(new File(s"public/tmp/picture/$filename"))
+//            println("resize -> " + picture.filename)
+//            Process("convert -thumbnail 220x220 -quality 70 " + s"public/tmp/picture/$filename") run
 
             println("File Upload OK : " + filename)
             Ok("File uploaded")

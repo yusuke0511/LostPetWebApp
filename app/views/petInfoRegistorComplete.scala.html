@@ -1,9 +1,13 @@
-@(message: String)(implicit assetsFinder: AssetsFinder))
+@(message: String)(implicit assetsFinder: AssetsFinder)
 <META NAME="robots" CONTENT="none">
+<META http-equiv="refresh" content="3;URL=/petInfoList">
 @main("ペット情報登録完了", assetsFinder) {
 <pre>
-    ペット情報の登録が完了しました。
-    ３秒後に自動遷移します。
+ペット情報の登録が完了しました。
+３秒後に自動遷移します。
+
 </pre>
+<br>
+自動的に画面遷移しない場合は<a href="petInfoList">こちら</a>
 }
 

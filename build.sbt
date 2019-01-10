@@ -23,15 +23,14 @@ libraryDependencies += openId
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.0"
 libraryDependencies += "com.typesafe.play" %% "play-iteratees" % "2.6.1"
 libraryDependencies += "com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1"
+libraryDependencies += "com.typesafe" % "config" % "1.3.1" //Road Config File
 
-//enablePlugins(JavaAppPackaging)
-enablePlugins(JavaServerAppPackaging)
-
+enablePlugins(DockerPlugin, JavaAppPackaging)
 // Dockerfileに書く内容
-packageName in Docker := "lostPet-webapp"
+packageName in Docker := "lost-pet-webapp"
 version in Docker := "1.0"
 dockerRepository := Some("celalink-lostpet")
 maintainer in Docker := "celalink <yu-yanai@celalink.jp>"
 dockerExposedPorts := List(8080)
-dockerBaseImage := "openjdk:latest"
+dockerBaseImage := "openjdk:8u151-jre-stretch"
 

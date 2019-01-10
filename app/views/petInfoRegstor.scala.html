@@ -31,7 +31,14 @@ $(function(){
 
   });
 });
+
+
 </script>
+<script type="text/javascript"><!--
+function openKiyaku() {
+    window.open("/kiyaku","window1","width=600,height=600");
+}
+// --></script>
 
 @main("ペット捜索情報入力", assetsFinder) {
 <h2>登録画面</h2>
@@ -94,7 +101,7 @@ $(function(){
             <label id="prefLabel" class="control-label col-lg-4">都道府県</label>
             <div class="col-lg-5">
                 <select class="form-control" id="pref" name="pref">
-                    <option value="" selected>ーーー選択してくださいーーー</option>
+                    <option value="" selected>選択してください</option>
                     <option value="1">北海道</option>
                     <option value="2">青森県</option>
                     <option value="3">岩手県</option>
@@ -160,8 +167,14 @@ $(function(){
                 <img id="img1" style="width:300px;height:300px;" />
             </div>
         </div>
+        <hr>
         <div class="form-group">
+            <input type="checkbox" name="kiyaku">利用規約に同意する
+            <a href="javascript:openKiyaku();">利用規約はこちら</a>
+            <br/>
+            <br/>
             <div class="col-lg-offset-1 col-xs-1">
+                <input type="button" class="btn btn-primary" value="一覧画面へ戻る" onClick="location.href='/petInfoList'">
                 <input type="submit" class="btn btn-primary" value="登録"/>
             </div>
         </div>

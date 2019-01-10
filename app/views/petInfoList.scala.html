@@ -47,7 +47,8 @@
         <tr>
             <td><img src="/assets/@d("image_path")" width="100" height="100"></td>
             <td><a href="/petInfoRegistor/@d("id")">@d("name")</a></td>
-            <td>@d("kind")</td>
+            <td>@util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))</td>
+            <td>@util.MessageUtil.getPropetyMessage("pref." + d("pref"))</td>
         </tr>
         }
     </table>

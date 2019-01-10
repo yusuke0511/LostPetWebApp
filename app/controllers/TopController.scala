@@ -11,4 +11,6 @@ class TopController @Inject()(cc: ControllerComponents) (implicit assetsFinder: 
   def index = Action {
     Ok(views.html.top(""))
   }
+
+
 }
