@@ -1,12 +1,19 @@
-@(message: String)(implicit assetsFinder: AssetsFinder)
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(message: String)(implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
 <META NAME="robots" CONTENT="none">
-@main("トップ画面", assetsFinder) {
+@main("トップ画面", assetsFinder, webJarsUtil) {
     <label id="LoginMessage">トップ画面</label><br/>
     <a href="/petInfoList">一覧画面</a><br/>
     <a href="/petInfoRegistor">登録画面</a><br/>
     <a href="/petInfoRegistorComplete">登録完了画面</a><br/>
     <a href="/maintenance">工事中画面</a><br/>
-    <a href="/kiyaku">利用規約画面</a><br/>
-    <a href="https://goo.gl/forms/vpEoFblI6bmiftgV2" target="_blank">お問い合わせ</a>
+    <a href="@assetsFinder.path("/html/kiyaku.html")">利用規約画面</a><br/>
+    <a href="https://goo.gl/forms/vpEoFblI6bmiftgV2" target="_blank">お問い合わせ</a><br/>
+    <a href="/auth">認証</a>
 }
 

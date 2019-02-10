@@ -3,25 +3,43 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /version                           controllers.HomeController.index
-GET     /                           controllers.TopController.index
+GET         /version                         controllers.HomeController.index
+GET         /                                controllers.TopController.index
 # An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
+GET         /count                           controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public/tmp/picture", file: Asset)
-
-# static file for requests
-GET /kiyaku    controllers.Assets.at(path="/public", file="/html/kiyaku.html")
+GET         /message                         controllers.AsyncController.message
 
 # Applocation
-GET     /login  controllers.LoginController.index
-GET     /test   controllers.TestViewsController.index
-GET     /maintenance controllers.MaintenanceController.init
-GET     /petInfoList    controllers.PetInfoListController.init
-GET     /petInfoRegistor    controllers.PetInfoRegistorController.init
-GET     /petInfoRegistor/:id    controllers.PetInfoDisplayController.init(id:Int)
-POST    /regist             controllers.PetInfoRegistorController.regist
-GET     /petInfoRegistorComplete               controllers.PetInfoRegistorController.complete
+GET         /maintenance                     controllers.MaintenanceController.init
+GET         /petInfoList                     controllers.PetInfoListController.init
+GET         /petInfoRegistor                 controllers.PetInfoRegistorController.init
+GET         /petInfoRegistor/:id             controllers.PetInfoDisplayController.init(id:Int)
+POST        /regist                          controllers.PetInfoRegistorController.regist
+GET         /petInfoRegistorComplete         controllers.PetInfoRegistorController.complete
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                    controllers.Assets.versioned(file)
+#->          /auth                            auth.Routes
+->          /webjars                         webjars.Routes
+
+### auth
+GET         /auth                            controllers.auth.ApplicationController.index
+GET         /signOut                         controllers.auth.ApplicationController.signOut
+GET         /authenticate/:provider          controllers.auth.SocialAuthController.authenticate(provider)
+
+GET         /signUp                          controllers.auth.SignUpController.view
+POST        /signUp                          controllers.auth.SignUpController.submit
+
+GET         /signIn                          controllers.auth.SignInController.view
+POST        /signIn                          controllers.auth.SignInController.submit
+
+GET         /password/forgot                 controllers.auth.ForgotPasswordController.view
+POST        /password/forgot                 controllers.auth.ForgotPasswordController.submit
+GET         /password/reset/:token           controllers.auth.ResetPasswordController.view(token: java.util.UUID)
+POST        /password/reset/:token           controllers.auth.ResetPasswordController.submit(token: java.util.UUID)
+GET         /password/change                 controllers.auth.ChangePasswordController.view
+POST        /password/change                 controllers.auth.ChangePasswordController.submit
+
+GET         /account/email/:email            controllers.auth.ActivateAccountController.send(email: String)
+GET         /account/activate/:token         controllers.auth.ActivateAccountController.activate(token: java.util.UUID)

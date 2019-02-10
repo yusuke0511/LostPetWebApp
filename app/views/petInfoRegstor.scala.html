@@ -1,46 +1,21 @@
 @import helper._
 @import forms.PetInfoRegistorForm
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
 @(errorFlg:Boolean
     ,genderList:List[Map[String,Any]]
     ,petKindList:List[Map[String,Any]]
-    ,requestForm:Form[PetInfoRegistorForm])(implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider)
-<!--@implicitField = @{ FieldConstructor(plainFieldConstructor.f) }-->
+    ,requestForm:Form[PetInfoRegistorForm]
+    ,user: models.User)(implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider, webJarsUtil: WebJarsUtil)
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script>
-$(function(){
-  $('#petImg').change(function(e){
-    //ファイルオブジェクトを取得する
-    var file = e.target.files[0];
-    var reader = new FileReader();
+<script src="@routes.Assets.versioned("javascripts/petInfoRegstor.js")" type="text/javascript"></script>
+@header("", Some(user))
 
-    //画像でない場合は処理終了
-    if(file.type.indexOf("image") < 0){
-      alert("画像ファイルを指定してください。");
-      return false;
-    }
-
-    //アップロードした画像を設定する
-    reader.onload = (function(file){
-      return function(e){
-        $("#img1").attr("src", e.target.result);
-        $("#img1").attr("title", file.name);
-      };
-    })(file);
-    reader.readAsDataURL(file);
-
-  });
-});
-
-
-</script>
-<script type="text/javascript"><!--
-function openKiyaku() {
-    window.open("/kiyaku","window1","width=600,height=600");
-}
-// --></script>
-
-@main("ペット捜索情報入力", assetsFinder) {
+@main("ペット捜索情報入力", assetsFinder, webJarsUtil) {
 <h2>登録画面</h2>
 @if(errorFlg) {
 迷子になったペットの情報を登録してください。
@@ -170,7 +145,7 @@ function openKiyaku() {
         <hr>
         <div class="form-group">
             <input type="checkbox" name="kiyaku">利用規約に同意する
-            <a href="javascript:openKiyaku();">利用規約はこちら</a>
+            <a href="@assetsFinder.path("/html/kiyaku.html")">利用規約はこちら</a>
             <br/>
             <br/>
             <div class="col-lg-offset-1 col-xs-1">

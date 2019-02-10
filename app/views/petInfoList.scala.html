@@ -1,7 +1,13 @@
 @import helper._
 @import forms.PetInfoRegistorForm
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
 @(errorFlg:Boolean
-,petInfoList:List[Map[String,Any]])(implicit assetsFinder: AssetsFinder)
+,petInfoList:List[Map[String,Any]])(implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <style>
@@ -26,7 +32,7 @@
   padding: 20px;
 }
 </style>
-@main("ペット捜索情報入力", assetsFinder) {
+@main("ペット捜索情報入力", assetsFinder, webJarsUtil) {
 <ul id="nav">
     <li><a href="../">戻る</a></li>
     <li><a href="/petInfoRegistor">新規登録</a></li>

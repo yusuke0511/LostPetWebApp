@@ -7,5 +7,5 @@ import anorm._
 import anorm.SqlParser._
 
 @Singleton
-class DBAccess @Inject()(db: Database) {
+class DBAccess @Inject() (db: Database) {
 }

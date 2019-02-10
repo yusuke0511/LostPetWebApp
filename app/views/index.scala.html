@@ -2,14 +2,22 @@
  * This template takes a two arguments, a String containing a
  * message to display and an AssetsFinder to locate static assets.
  *@
-@(message: String)(implicit assetsFinder: AssetsFinder)
+
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(message: String)(implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
+
 
 @*
  * Call the `main` template with two arguments. The first
  * argument is a `String` with the title of the page, the second
  * argument is an `Html` object containing the body of the page.
  *@
-@main("Welcome to Play", assetsFinder) {
+@main("Welcome to Play", assetsFinder, webJarsUtil) {
 
     @*
      * Get an `Html` object by calling the built-in Play welcome

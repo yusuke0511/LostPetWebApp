@@ -1,6 +1,12 @@
-@(message: String)(implicit assetsFinder: AssetsFinder)
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(message: String)(implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
 <META NAME="robots" CONTENT="none">
-@main("メンテナンス", assetsFinder) {
+@main("メンテナンス", assetsFinder, webJarsUtil) {
     <label id="LoginMessage">現在メンテナンス中です。しばらくしてから再度アクセスしてください。</label><br/>
 }
 

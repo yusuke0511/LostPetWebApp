@@ -1,0 +1,37 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(message: String, user: Option[models.User] = None)(implicit messages: Messages)
+<header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">@messages("toggle.navigation")</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <nav class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="@controllers.auth.routes.ApplicationController.index">@messages("home")</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @user.map { u =>
+                <li><a href="@controllers.auth.routes.ApplicationController.index">@u.name</a></li>
+                @if(u.loginInfo.providerID == com.mohiva.play.silhouette.impl.providers.CredentialsProvider.ID) {
+                <li><a href="@controllers.auth.routes.ChangePasswordController.view">@messages("change.password")</a></li>
+                }
+                <li><a href="@controllers.auth.routes.ApplicationController.signOut">@messages("sign.out")</a></li>
+                }.getOrElse {
+                <li><a href="@controllers.auth.routes.SignInController.view">@messages("sign.in")</a></li>
+                <li><a href="@controllers.auth.routes.SignUpController.view">@messages("sign.up")</a></li>
+                }
+            </ul>
+        </nav>
+    </div>
+</header>
+
