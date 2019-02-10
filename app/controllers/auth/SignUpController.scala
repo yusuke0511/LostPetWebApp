@@ -9,7 +9,7 @@ import com.mohiva.play.silhouette.api.services.AvatarService
 import com.mohiva.play.silhouette.api.util.PasswordHasherRegistry
 import com.mohiva.play.silhouette.impl.providers._
 import controllers.AssetsFinder
-import forms.SignUpForm
+import forms.auth.SignUpForm
 import models.User
 import models.services.{ AuthTokenService, UserService }
 import org.webjars.play.WebJarsUtil
