@@ -9,8 +9,6 @@
 @(errorFlg:Boolean
     ,petInfoList:List[Map[String,Any]])(implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider, webJarsUtil: WebJarsUtil))
 
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-@header
 @main("ペット捜索情報", assetsFinder, webJarsUtil) {
 <h2>迷子ペット情報画面</h2>
 @if(errorFlg) {

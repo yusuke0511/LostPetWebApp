@@ -10,12 +10,18 @@
     ,genderList:List[Map[String,Any]]
     ,petKindList:List[Map[String,Any]]
     ,requestForm:Form[PetInfoRegistorForm]
-    ,user: models.User)(implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider, webJarsUtil: WebJarsUtil)
+    ,user: models.User)(implicit assetsFinder: AssetsFinder,
+request: RequestHeader,
+messagesProvider: MessagesProvider,
+messages: Messages,
+webJarsUtil: WebJarsUtil)
 
-<script src="@routes.Assets.versioned("javascripts/petInfoRegstor.js")" type="text/javascript"></script>
-@header("", Some(user))
 
 @main("ペット捜索情報入力", assetsFinder, webJarsUtil) {
+
+@header("", Some(user))
+<script src="@routes.Assets.versioned("javascripts/petInfoRegstor.js")" type="text/javascript"></script>
+
 <h2>登録画面</h2>
 @if(errorFlg) {
 迷子になったペットの情報を登録してください。
@@ -26,14 +32,14 @@
 <div class="container">
     @form(action = routes.PetInfoRegistorController.regist, 'enctype -> "multipart/form-data"){
         <div class="form-group">
-            <label id="nameLabel" class="control-label col-lg-4">ペットの名前</label>
-            <div class="col-lg-5">
+            <label id="nameLabel" class="control-label col-xl-6">ペットの名前</label>
+            <div class="col-xl-6">
                 @inputText(requestForm("name"), 'class -> "form-control" )
             </div>
         </div>
         <div class="form-group">
-            <label id="petKindLabel" class="control-label col-lg-4">ペットの種類</label>
-            <div class="col-lg-5">
+            <label id="petKindLabel" class="control-label col-xl-6">ペットの種類</label>
+            <div class="col-xl-6">
                 <select class="form-control" id="pet_kind_type" name="pet_kind_type">
                     @for(value <- petKindList) {
                     <option value=@value("pet_type")>@value("pet_kind_name")</option>
@@ -42,39 +48,25 @@
             </div>
         </div>
         <div class="form-group">
-            <label id="genderLabel" class="control-label col-lg-4">ペットの性別</label>
-            <div class="col-lg-5">
+            <label id="genderLabel" class="control-label col-xl-6">ペットの性別</label>
+            <div class="col-xl-6">
                 <select class="form-control" id="gender_type" name="gender_type">
                 @for(value <- genderList) {
                     <option value=@value("gender")>@value("gender_name")</option>
                 }
                 </select>
-                <!--
-                @select(
-                    field = requestForm("gender_type"),
-                    options = Seq(
-                        "あああ" -> "あああ"
-                /*
-                        for(value <- petKindList) {
-                            value("gender") -> value("gender_name")
-                        }
-                */
-                    )
-                )
-                -->
             </div>
         </div>
         <div class="form-group">
-            <label id="featureLabel" class="control-label col-lg-4">ペットの特徴</label>
-            <div class="col-lg-5">
+            <div class="col-xl-6">
                 @textarea(requestForm("feature"), 'class -> "form-control", 'rows -> "3",
                     'Placeholder -> "ペットの特徴を詳しく記入してください")
             </div>
             <p class="help-block">※1000文字以内で記述してください</p>
         </div>
         <div class="from-group">
-            <label id="prefLabel" class="control-label col-lg-4">都道府県</label>
-            <div class="col-lg-5">
+            <label id="prefLabel" class="control-label col-xl-6">都道府県</label>
+            <div class="col-xl-6">
                 <select class="form-control" id="pref" name="pref">
                     <option value="" selected>選択してください</option>
                     <option value="1">北海道</option>
@@ -128,16 +120,16 @@
             </div>
         </div>
         <div class="form-group">
-            <label id="lostPlaceLabel" class="control-label col-lg-4">迷子になった場所</label>
-            <div class="col-lg-5">
+            <label id="lostPlaceLabel" class="control-label col-xl-6">迷子になった場所</label>
+            <div class="col-xl-6">
                 @textarea(requestForm("lostPlace"), 'class -> "form-control", 'rows -> "3",
                 'Placeholder -> "目印になるものを記載してください")
             </div>
             <p class="help-block">※1000文字以内で記述してください</p>
         </div>
         <div class="form-group">
-            <label id="pictureLabel" class="control-label col-lg-4">ペットの写真をアップする</label>
-            <div class="col-lg-5">
+            <label id="pictureLabel" class="control-label col-xl-6">ペットの写真をアップする</label>
+            <div class="col-xl-6">
                 <input type="file" name="petImg" id="petImg">
                 <img id="img1" style="width:300px;height:300px;" />
             </div>
@@ -148,7 +140,7 @@
             <a href="@assetsFinder.path("/html/kiyaku.html")">利用規約はこちら</a>
             <br/>
             <br/>
-            <div class="col-lg-offset-1 col-xs-1">
+            <div class="col-lg-offset-1 col-xl-6">
                 <input type="button" class="btn btn-primary" value="一覧画面へ戻る" onClick="location.href='/petInfoList'">
                 <input type="submit" class="btn btn-primary" value="登録"/>
             </div>

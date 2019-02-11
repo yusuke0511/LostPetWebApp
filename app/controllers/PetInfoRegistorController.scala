@@ -12,7 +12,7 @@ import play.api.data.Forms._
 import forms.PetInfoRegistorForm
 import models.User
 import org.webjars.play.WebJarsUtil
-import play.api.i18n.I18nSupport
+import play.api.i18n.{ I18nSupport, Messages }
 import utils.auth.{ DefaultEnv, WithProvider }
 
 import scala.concurrent.Future
@@ -21,6 +21,11 @@ import scala.concurrent.Future
  * ペット迷子情報登録画面
  * @param gender
  * @param petKind
+ * @param petSearchInfo
+ * @param cc
+ * @param silhouette
+ * @param assetsFinder
+ * @param webJarsUtil
  */
 @Singleton
 class PetInfoRegistorController @Inject() (
@@ -43,9 +48,6 @@ class PetInfoRegistorController @Inject() (
    */
   def init = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-      val u = request.identity
-      println(u.loginInfo)
-
       Ok(views.html.petInfoRegstor(
         true,
         gender.genderList,
