@@ -25,7 +25,12 @@ class CustomSecuredErrorHandler @Inject() (val messagesApi: MessagesApi) extends
    * @return The result to send to the client.
    */
   override def onNotAuthenticated(implicit request: RequestHeader) = {
-    Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
+    request.target.path match {
+      case "/petInfoRegistor" => Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
+      case "/auth" => Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
+      case "/petInfoList" => Future.successful(Redirect(controllers.routes.PetInfoListController.notAuth()))
+      case _ => Future.successful(Redirect(controllers.routes.TopController.index()))
+    }
   }
 
   /**

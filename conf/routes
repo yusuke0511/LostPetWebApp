@@ -4,7 +4,8 @@
 
 # An example controller showing a sample home page
 GET         /version                         controllers.HomeController.index
-GET         /                                controllers.TopController.index
+GET         /                                controllers.TopController.init
+GET         /index                           controllers.TopController.index
 # An example controller showing how to use dependency injection
 GET         /count                           controllers.CountController.count
 # An example controller showing how to write asynchronous code
@@ -13,6 +14,7 @@ GET         /message                         controllers.AsyncController.message
 # Applocation
 GET         /maintenance                     controllers.MaintenanceController.init
 GET         /petInfoList                     controllers.PetInfoListController.init
+GET         /notAuth                         controllers.PetInfoListController.notAuth
 GET         /petInfoRegistor                 controllers.PetInfoRegistorController.init
 GET         /petInfoRegistor/:id             controllers.PetInfoDisplayController.init(id:Int)
 +nocsrf

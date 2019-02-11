@@ -20,12 +20,15 @@
                 <li><a href="@controllers.routes.TopController.index">@messages("home")</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                @if(user.get != null) {
                 @user.map { u =>
                 <li><a href="@controllers.auth.routes.ApplicationController.index">@u.name</a></li>
                 <li><a href="@controllers.auth.routes.ApplicationController.signOut">@messages("sign.out")</a></li>
                 }.getOrElse {
-                <li><a href="@controllers.auth.routes.SignInController.view">@messages("sign.in")</a></li>
                 <li><a href="@controllers.auth.routes.SignUpController.view">@messages("sign.up")</a></li>
+                }
+                }else{
+                <li><a href="@controllers.auth.routes.SignInController.view">@messages("sign.in")</a></li>
                 }
             </ul>
         </nav>

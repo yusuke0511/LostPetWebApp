@@ -4,9 +4,13 @@
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
 
-@(message: String)(implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
+@(message: String, user:models.User)(
+implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil, messages: Messages)
+
 <META NAME="robots" CONTENT="none">
 @main("トップ画面", assetsFinder, webJarsUtil) {
+@header("", Some(user))
+<div style="padding-top:75px;margin-left:20px">
     <label id="LoginMessage">トップ画面</label><br/>
     <a href="/petInfoList">一覧画面</a><br/>
     <a href="/petInfoRegistor">登録画面</a><br/>
@@ -15,5 +19,6 @@
     <a href="@assetsFinder.path("/html/kiyaku.html")">利用規約画面</a><br/>
     <a href="https://goo.gl/forms/vpEoFblI6bmiftgV2" target="_blank">お問い合わせ</a><br/>
     <a href="/auth">認証</a>
+</div>
 }
 

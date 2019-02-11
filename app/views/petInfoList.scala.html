@@ -6,21 +6,14 @@
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
 
-@(errorFlg:Boolean
-,petInfoList:List[Map[String,Any]])(implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
+@(petInfoList:List[Map[String,Any]], user: models.User)(
+implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil, messages: Messages)
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 </style>
 @main("ペット捜索情報入力", assetsFinder, webJarsUtil) {
-
+@header("", Some(user))
 <h2>登録画面</h2>
-
-@if(errorFlg) {
-迷子になったペットの情報を登録してください。
-} else {
-入力内容に誤りがあります。内容を確認して再度登録してください。
-}
-
 <br/>
 @if(petInfoList.length == 0) {
 該当するデータがありません。
