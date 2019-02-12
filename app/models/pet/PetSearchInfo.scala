@@ -31,19 +31,20 @@ class PetSearchInfo @Inject() (db: Database) {
     }
   }
 
-  def insert(r: PetInfoRegistorForm, image_path: String): Option[Long] = {
+  def insert(r: PetInfoRegistorForm, userId: String, image_path: String): Option[Long] = {
     db.withConnection { implicit c =>
       SQL(
         """
             insert into pet_search_info
               (
-                name, gender, kind, feature, pref, place,
+                user_id, name, gender, kind, feature, pref, place,
                 image_path, create_time, update_time
               ) values (
-                {name}, {gender}, {kind}, {feature}, {pref}, {place},
+                {user_id}, {name}, {gender}, {kind}, {feature}, {pref}, {place},
                 {image_path}, NOW(), NOW()
               )
           """).on(
+          'user_id -> userId,
           'name -> r.name,
           'gender -> r.gender,
           'kind -> r.petKind,

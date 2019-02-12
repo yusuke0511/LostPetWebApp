@@ -94,7 +94,7 @@ class PetInfoRegistorController @Inject() (
             println("File Upload OK : " + filename)
             Ok("File uploaded")
 
-            var res = petSearchInfo.insert(requestForm, filename)
+            var res = petSearchInfo.insert(requestForm, request.identity.userID.toString, filename)
             Redirect(routes.PetInfoRegistorController.complete)
 
           }.getOrElse {

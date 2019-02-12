@@ -22,15 +22,8 @@ $(function(){
   });
 });
 
+// 利用規約の表示
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
 
-function openKiyaku() {
-    window.open("/kiyaku","window1","width=600,height=600");
-}
-
-function clickHandler(e) {
-    window.open("/kiyaku","window1","width=600,height=600");
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('.kiyaku').addEventListener('click', clickHandler);
-});
