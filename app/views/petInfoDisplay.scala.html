@@ -7,10 +7,11 @@
 @import controllers.AssetsFinder
 
 @(errorFlg:Boolean
-    ,petInfoList:List[Map[String,Any]])(
+    ,petInfoList:List[Map[String,Any]],user: models.User)(
 implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider, webJarsUtil: WebJarsUtil)
 
 @main("ペット捜索情報", assetsFinder, webJarsUtil) {
+@header("", Some(user))
 <h2>迷子ペット情報画面</h2>
 @if(errorFlg) {
 表示されているペット情報はすでに削除されている可能性があります。
@@ -21,34 +22,33 @@ implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: Me
     <img src="/assets/@d("image_path")" width="300" height="300">
     <br/>
     <div class="form-group">
-        <label id="nameLabel" class="control-label col-lg-4">ペットの名前</label>
+        <label id="nameLabel" class="control-label col-xs-6">ペットの名前</label>
         @d("name")
     </div>
     <div class="form-group">
-        <label id="petKindLabel" class="control-label col-lg-4">ペットの種類</label>
+        <label id="petKindLabel" class="control-label col-xs-6">ペットの種類</label>
         @util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))
     </div>
     <div class="form-group">
-        <label id="genderLabel" class="control-label col-lg-4">ペットの性別</label>
+        <label id="genderLabel" class="control-label col-xs-6">ペットの性別</label>
         @util.MessageUtil.getPropetyMessage("gender." + d("gender"))
     </div>
     <div class="form-group">
-        <label id="featureLabel" class="control-label col-lg-4">ペットの特徴</label>
+        <label id="featureLabel" class="control-label col-xs-6">ペットの特徴</label>
         <div>
             @d("feature")
         </div>
     </div>
     <div class="from-group">
-        <label id="prefLabel" class="control-label col-lg-4">都道府県</label>
+        <label id="prefLabel" class="control-label col-xs-6">都道府県</label>
         @util.MessageUtil.getPropetyMessage("pref." + d("pref"))
     </div>
     <div class="form-group">
-        <label id="lostPlaceLabel" class="control-label col-lg-4">迷子になった場所</label>
+        <label id="lostPlaceLabel" class="control-label col-xs-6">迷子になった場所</label>
         @d("place")
     </div>
     }
 </div>
-<input type="button" class="btn btn-primary" value="一覧画面へ戻る" onClick="location.href='/petInfoList'">
 }
 }
 

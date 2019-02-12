@@ -14,9 +14,10 @@ GET         /message                         controllers.AsyncController.message
 # Applocation
 GET         /maintenance                     controllers.MaintenanceController.init
 GET         /petInfoList                     controllers.PetInfoListController.init
-GET         /notAuth                         controllers.PetInfoListController.notAuth
+GET         /petInfoList/noAuth              controllers.PetInfoListController.notAuth
 GET         /petInfoRegistor                 controllers.PetInfoRegistorController.init
-GET         /petInfoRegistor/:id             controllers.PetInfoDisplayController.init(id:Int)
+GET         /petInfoDisplay/:id              controllers.PetInfoDisplayController.init(id:Int)
+GET         /petInfoDisplay/:id/noAuth       controllers.PetInfoDisplayController.noAuth(id:Int)
 +nocsrf
 POST        /regist                          controllers.PetInfoRegistorController.regist
 GET         /petInfoRegistorComplete         controllers.PetInfoRegistorController.complete

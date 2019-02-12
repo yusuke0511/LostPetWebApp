@@ -1,9 +1,10 @@
 package utils.auth
 
-import javax.inject.Inject
+import java.util
 
+import javax.inject.Inject
 import com.mohiva.play.silhouette.api.actions.SecuredErrorHandler
-import play.api.i18n.{ MessagesApi, I18nSupport, Messages }
+import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
 import play.api.mvc.RequestHeader
 import play.api.mvc.Results._
 
@@ -25,11 +26,18 @@ class CustomSecuredErrorHandler @Inject() (val messagesApi: MessagesApi) extends
    * @return The result to send to the client.
    */
   override def onNotAuthenticated(implicit request: RequestHeader) = {
-    request.target.path match {
-      case "/petInfoRegistor" => Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
-      case "/auth" => Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
-      case "/petInfoList" => Future.successful(Redirect(controllers.routes.PetInfoListController.notAuth()))
-      case _ => Future.successful(Redirect(controllers.routes.TopController.index()))
+    val target: Array[String] = request.target.path.split("/")
+
+    if (target.size > 0) {
+      target(1) match {
+        case "petInfoRegistor" => Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
+        case "auth" => Future.successful(Redirect(controllers.auth.routes.SignInController.view()))
+        case "petInfoList" => Future.successful(Redirect(controllers.routes.PetInfoListController.notAuth()))
+        case "petInfoDisplay" => Future.successful(Redirect(controllers.routes.PetInfoDisplayController.noAuth(target(2).toInt)))
+        case _ => Future.successful(Redirect(controllers.routes.TopController.index()))
+      }
+    } else {
+      Future.successful(Redirect(controllers.routes.TopController.index()))
     }
   }
 
