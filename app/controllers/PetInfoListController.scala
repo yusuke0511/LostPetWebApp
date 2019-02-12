@@ -5,15 +5,10 @@ import java.nio.file.{ Files, Path, Paths }
 import com.mohiva.play.silhouette.api.Silhouette
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
-import forms.PetInfoRegistorForm
 import javax.inject._
-import models.pet.{ Gender, PetKind, PetSearchInfo }
+import models.pet.PetSearchInfo
 import org.webjars.play.WebJarsUtil
-import play.api.Play._
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.i18n.{ I18nSupport, Lang, Langs }
-import play.api.libs.Collections
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import utils.auth.{ DefaultEnv, WithProvider }
 
@@ -27,20 +22,17 @@ class PetInfoListController @Inject() (petSearchInfo: PetSearchInfo, cc: Control
   webJarsUtil: WebJarsUtil, assetsFinder: AssetsFinder)
   extends AbstractController(cc) with I18nSupport {
 
-  import play.api.data.validation.Constraints._
-
-  val list: List[Map[String, Any]] = petSearchInfo.getPetInfoList
   /**
    * 初期画面表示
    */
   def notAuth = Action { implicit request =>
-    Ok(views.html.petInfoList(list, user = null))
+    Ok(views.html.petInfoList(petSearchInfo.getPetInfoList, user = null))
   }
 
   def init = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
       println(request.identity)
-      Ok(views.html.petInfoList(list, request.identity))
+      Ok(views.html.petInfoList(petSearchInfo.getPetInfoList, request.identity))
   }
 
   def test(imagePath: String): String = {
