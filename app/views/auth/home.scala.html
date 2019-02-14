@@ -3,7 +3,7 @@
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
 
-@(user: models.User)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@(petInfoList:List[Map[String,Any]],user: models.User)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
 @main(messages("home.title"), Some(user)) {
     <div class="user col-md-6 col-md-offset-3">
@@ -34,5 +34,51 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <h4>迷子ペット投稿一覧</h4>
+        <div>
+            @if(petInfoList.length == 0) {
+            投稿している迷子ペット情報はありません。
+            } else {
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Pet Name</th>
+                    <th>Pet Kinde</th>
+                    <th>Search Pref</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @for(d <- petInfoList) {
+                <tr>
+                    <td><img src="/assets/@d("image_path")" width="65" height="65"></td>
+                    <td><a href="/petInfoDisplay/@d("id")">@d("name")</a></td>
+                    <td>@util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))</td>
+                    <td>@util.MessageUtil.getPropetyMessage("pref." + d("pref"))</td>
+                    <td>
+                        <form action="" id="update-form@d("id")" data-id="@d("id")">
+                            <input type="button" id="update" class="btn btn-info" value="更新" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="" id="delete-form@d("id")" data-id="@d("id")">
+                            <input type="button" id="delete" class="btn btn-warning" value="削除" />
+                        </form>
+                    </td>
+                </tr>
+                </form>
+                }
+                </tbody>
+            </table>
+            }
+        </div>
     </div>
+    <div id="cdl1" style="display:none;">
+        <p>この内容でよろしいでしょうか？</p>
+    </div>
+<script src="@assets.path("javascripts/home.js")"></script>
 }

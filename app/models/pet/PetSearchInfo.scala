@@ -24,10 +24,25 @@ class PetSearchInfo @Inject() (db: Database) {
     }
   }
 
-  def getPetInfoList(id: Int): List[Map[String, Any]] = {
+  def getPetInfoList(id: Long): List[Map[String, Any]] = {
     db.withConnection { implicit c =>
       SQL("SELECT * FROM pet_search_info WHERE id = {id} ORDER BY id desc").on('id -> id)
         .as(mapper.*)
+    }
+  }
+
+  def getOwnPetInfoList(user_id: String): List[Map[String, Any]] = {
+    db.withConnection { implicit c =>
+      SQL("SELECT * FROM pet_search_info WHERE user_id = {user_id} ORDER BY id desc").on('user_id -> user_id)
+        .as(mapper.*)
+    }
+  }
+
+  def deletePetInfoList(user_id: String, id: Long) = {
+    db.withConnection { implicit c =>
+      SQL("DELETE FROM pet_search_info WHERE user_id = {user_id} and id = {id}").on(
+        'user_id -> user_id,
+        'id -> id).executeUpdate()
     }
   }
 

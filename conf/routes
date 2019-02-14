@@ -30,6 +30,7 @@ GET         /assets/*file                    controllers.Assets.versioned(file)
 ### auth
 GET         /auth                            controllers.auth.ApplicationController.index
 GET         /signOut                         controllers.auth.ApplicationController.signOut
+GET         /deletePetInfoList               controllers.auth.ApplicationController.delete(id)
 GET         /authenticate/:provider          controllers.auth.SocialAuthController.authenticate(provider)
 
 GET         /signUp                          controllers.auth.SignUpController.view
