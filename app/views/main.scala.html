@@ -21,7 +21,6 @@
     <META NAME="robots" CONTENT="none"><!--開発中はGoogleの検索に引っかからないようにする-->
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/pepper-grinder/jquery-ui.css">
-    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,6 +31,8 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
     @webJarsUtil.locate("bootstrap.min.css").css()
     @webJarsUtil.locate("bootstrap-theme.min.css").css()
+    @webJarsUtil.locate("jquery.min.js").script()
+    @webJarsUtil.locate("jquery-ui.min.js").script()
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

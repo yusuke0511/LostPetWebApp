@@ -13,9 +13,11 @@ import forms.PetInfoRegistorForm
 import models.User
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{ I18nSupport, Messages }
+import play.api.libs.json.Json
 import utils.auth.{ DefaultEnv, WithProvider }
 
 import scala.concurrent.Future
+import scala.util.parsing.json.JSONObject
 
 /**
  * ペット迷子情報登録画面
@@ -36,12 +38,14 @@ class PetInfoRegistorController @Inject() (
   extends AbstractController(cc) with I18nSupport {
 
   val formVal = Form(mapping(
-    "name" -> text,
+    "name" -> nonEmptyText,
     "gender_type" -> number,
     "pet_kind_type" -> number,
     "feature" -> text,
     "pref" -> number,
-    "lostPlace" -> text)(PetInfoRegistorForm.apply)(PetInfoRegistorForm.unapply))
+    "lostPlace" -> text,
+    "lat" -> text,
+    "lng" -> text)(PetInfoRegistorForm.apply)(PetInfoRegistorForm.unapply))
 
   /**
    * 初期画面表示
@@ -53,7 +57,32 @@ class PetInfoRegistorController @Inject() (
         gender.genderList,
         petKind.petKindList,
         formVal,
-        request.identity))
+        request.identity,
+        routes.PetInfoRegistorController.regist))
+  }
+
+  def edit(id: Long) = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
+    implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+      val result: List[Map[String, Any]] = petSearchInfo.getPetInfoList(id)
+      val petRegistData = result.apply(0)
+
+      val p: PetInfoRegistorForm = PetInfoRegistorForm(
+        petRegistData.get("name").get.toString,
+        petRegistData.get("gender").get.toString.toInt,
+        petRegistData.get("kind").get.toString.toInt,
+        petRegistData.get("feature").get.toString,
+        petRegistData.get("pref").get.toString.toInt,
+        petRegistData.get("place").get.toString,
+        petRegistData.get("lat").get.toString,
+        petRegistData.get("lng").get.toString)
+
+      Ok(views.html.petInfoRegstor(
+        true,
+        gender.genderList,
+        petKind.petKindList,
+        formVal.fill(p),
+        request.identity,
+        routes.PetInfoRegistorController.update))
   }
 
   /**
@@ -72,7 +101,8 @@ class PetInfoRegistorController @Inject() (
             gender.genderList,
             petKind.petKindList,
             errorForm,
-            request.identity))
+            request.identity,
+            routes.PetInfoRegistorController.regist))
         },
         requestForm => {
           println("push button!!!!")
@@ -103,6 +133,8 @@ class PetInfoRegistorController @Inject() (
           }
         })
   }
+
+  def update = TODO
 
   def complete = Action {
     Ok(views.html.petInfoRegistorComplete(""))

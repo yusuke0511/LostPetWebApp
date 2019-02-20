@@ -15,11 +15,16 @@ GET         /message                         controllers.AsyncController.message
 GET         /maintenance                     controllers.MaintenanceController.init
 GET         /petInfoList                     controllers.PetInfoListController.init
 GET         /petInfoList/noAuth              controllers.PetInfoListController.notAuth
++nocsrf
 GET         /petInfoRegistor                 controllers.PetInfoRegistorController.init
-GET         /petInfoDisplay/:id              controllers.PetInfoDisplayController.init(id:Int)
-GET         /petInfoDisplay/:id/noAuth       controllers.PetInfoDisplayController.noAuth(id:Int)
++nocsrf
+GET         /petInfoEdit                     controllers.PetInfoRegistorController.edit(id:Long ?= 1)
+GET         /petInfoDisplay/:id              controllers.PetInfoDisplayController.init(id:Long)
+GET         /petInfoDisplay/:id/noAuth       controllers.PetInfoDisplayController.noAuth(id:Long)
 +nocsrf
 POST        /regist                          controllers.PetInfoRegistorController.regist
++nocsrf
+POST        /update                          controllers.PetInfoRegistorController.update
 GET         /petInfoRegistorComplete         controllers.PetInfoRegistorController.complete
 
 # Map static resources from the /public folder to the /assets URL path

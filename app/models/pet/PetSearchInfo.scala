@@ -6,14 +6,29 @@ import play.api.mvc._
 import play.api.db._
 import anorm._
 import anorm.SqlParser._
+import com.fasterxml.jackson.databind.JsonNode
+import play.libs.Json
 
 @Singleton
 class PetSearchInfo @Inject() (db: Database) {
 
-  val parser = long("id") ~ str("name") ~ int("gender") ~ int("kind") ~ str("feature") ~ int("pref") ~ str("place") ~ str("image_path") ~ date("create_time") ~ date("update_time")
+  val parser = {
+    long("id") ~
+      str("name") ~
+      int("gender") ~
+      int("kind") ~
+      str("feature") ~
+      int("pref") ~
+      str("place") ~
+      str("lat") ~
+      str("lng") ~
+      str("image_path") ~
+      date("create_time") ~
+      date("update_time")
+  }
   val mapper = parser.map {
-    case id ~ name ~ gender ~ kind ~ feature ~ pref ~ place ~ image_path ~ create_time ~ update_time => Map("id" -> id, "name" -> name, "gender" -> gender, "kind" -> kind,
-      "feature" -> feature, "pref" -> pref, "place" -> place, "image_path" -> image_path,
+    case id ~ name ~ gender ~ kind ~ feature ~ pref ~ place ~ lat ~ lng ~ image_path ~ create_time ~ update_time => Map("id" -> id, "name" -> name, "gender" -> gender, "kind" -> kind,
+      "feature" -> feature, "pref" -> pref, "place" -> place, "lat" -> lat, "lng" -> lng, "image_path" -> image_path,
       "create_time" -> create_time, "update_time" -> update_time)
   }
 
@@ -32,9 +47,10 @@ class PetSearchInfo @Inject() (db: Database) {
   }
 
   def getOwnPetInfoList(user_id: String): List[Map[String, Any]] = {
-    db.withConnection { implicit c =>
-      SQL("SELECT * FROM pet_search_info WHERE user_id = {user_id} ORDER BY id desc").on('user_id -> user_id)
-        .as(mapper.*)
+    db.withConnection {
+      implicit c =>
+        SQL("SELECT * FROM pet_search_info WHERE user_id = {user_id} ORDER BY id desc").on('user_id -> user_id)
+          .as(mapper.*)
     }
   }
 
@@ -52,10 +68,10 @@ class PetSearchInfo @Inject() (db: Database) {
         """
             insert into pet_search_info
               (
-                user_id, name, gender, kind, feature, pref, place,
+                user_id, name, gender, kind, feature, pref, place, lat, lng,
                 image_path, create_time, update_time
               ) values (
-                {user_id}, {name}, {gender}, {kind}, {feature}, {pref}, {place},
+                {user_id}, {name}, {gender}, {kind}, {feature}, {pref}, {place}, {lat}, {lng},
                 {image_path}, NOW(), NOW()
               )
           """).on(
@@ -65,6 +81,8 @@ class PetSearchInfo @Inject() (db: Database) {
           'kind -> r.petKind,
           'feature -> r.feature,
           'pref -> r.pref,
+          'lat -> r.lat,
+          'lng -> r.lng,
           'place -> r.place,
           'image_path -> image_path).executeInsert()
     }

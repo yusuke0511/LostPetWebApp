@@ -47,8 +47,19 @@ implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: Me
         <label id="lostPlaceLabel" class="control-label col-xs-6">迷子になった場所</label>
         @d("place")
     </div>
+    <!-- 地図を表示させる要素 -->
+    <div class="map_box01"><div id="map-canvas" style="width: 600px;height: 350px;"></div></div>
+    <script>dispayMap(@d("lat"), @d("lng"));</script>
+    <input type="hidden" value="@d("lat")", id="lat" name="lat">
+    <input type="hidden" value="@d("lng")", id="lng" name="lng">
     }
 </div>
+<br/>
+<br/>
+<br/>
+<br/>
 }
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6tS0tAb71DKpqpvrHzijoFVWrnISqgl8" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/petInfoDisplay.js")" type="text/javascript"></script>
 }
 

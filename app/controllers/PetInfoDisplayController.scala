@@ -25,7 +25,7 @@ class PetInfoDisplayController @Inject() (petSearchInfo: PetSearchInfo, cc: Cont
   /**
    * 初期画面表示
    */
-  def init(id: Int) = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
+  def init(id: Long) = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
       val list: List[Map[String, Any]] = petSearchInfo.getPetInfoList(id)
       if (list.size != 1) {
@@ -35,7 +35,7 @@ class PetInfoDisplayController @Inject() (petSearchInfo: PetSearchInfo, cc: Cont
       }
   }
 
-  def noAuth(id: Int) = Action { implicit request =>
+  def noAuth(id: Long) = Action { implicit request =>
     val list: List[Map[String, Any]] = petSearchInfo.getPetInfoList(id)
     if (list.size != 1) {
       Ok(views.html.petInfoDisplay(true, list, user = null))
