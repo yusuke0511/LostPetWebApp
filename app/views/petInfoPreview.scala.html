@@ -1,0 +1,90 @@
+@import helper._
+@import forms.PetInfoRegistorForm
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(requestForm:PetInfoRegistorForm,user: models.User, send: play.api.mvc.Call)(
+implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider, webJarsUtil: WebJarsUtil)
+
+@main("プレビュー", assetsFinder, webJarsUtil) {
+@header("", Some(user))
+<h2>迷子ペット情報画面</h2>
+<br/>
+@form(action = send,  'enctype -> "multipart/form-data"){
+<div class="container">
+    <!--<img src="/assets/requestForm("image_path")" width="300" height="300">-->
+    <br/>
+    <div class="form-group">
+        <label id="nameLabel" class="control-label col-xs-6">ペットの名前</label>
+        @requestForm.name
+    </div>
+    <div class="form-group">
+        <label id="petKindLabel" class="control-label col-xs-6">ペットの種類</label>
+        @util.MessageUtil.getPropetyMessage("pet.type." + requestForm.petKind)
+    </div>
+    <div class="form-group">
+        <label id="genderLabel" class="control-label col-xs-6">ペットの性別</label>
+        @util.MessageUtil.getPropetyMessage("gender." + requestForm.gender)
+    </div>
+    <div class="form-group">
+        <label id="featureLabel" class="control-label col-xs-6">ペットの特徴</label>
+        <div>
+            @requestForm.feature
+        </div>
+    </div>
+    <div class="from-group">
+        <label id="prefLabel" class="control-label col-xs-6">都道府県</label>
+        @util.MessageUtil.getPropetyMessage("pref." + requestForm.pref)
+    </div>
+    <div class="form-group">
+        <label id="lostPlaceLabel" class="control-label col-xs-6">迷子になった場所</label>
+        @requestForm.place
+    </div>
+    <!-- 地図を表示させる要素 -->
+    <div class="map_box01"><div id="map-canvas" style="width: 600px;height: 350px;"></div></div>
+    <script>dispayMap(@requestForm.lat, @requestForm.lng);</script>
+    <input type="hidden" value="@requestForm.lat", id="lat" name="lat">
+    <input type="hidden" value="@requestForm.lng", id="lng" name="lng">
+    <br/>
+    <div class="form-group">
+        <input type="checkbox" name="kiyaku">利用規約に同意する
+        <!-- 切り替えボタンの設定 -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+            利用規約を表示する
+        </button>
+
+        <!-- モーダルの設定 -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">利用規約</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @kiyaku("利用規約")
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="button" id="back" class="btn btn-primary" value="登録内容を修正する"/>
+    <input type="submit" class="btn btn-primary" value="上記の内容で登録する"/>
+</div>
+}
+<br/>
+<br/>
+<br/>
+<br/>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6tS0tAb71DKpqpvrHzijoFVWrnISqgl8" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/petInfoDisplay.js")" type="text/javascript"></script>
+}
+

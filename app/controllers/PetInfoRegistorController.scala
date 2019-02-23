@@ -12,9 +12,11 @@ import play.api.data.Forms._
 import forms.PetInfoRegistorForm
 import models.User
 import org.webjars.play.WebJarsUtil
+import play.api.cache.SyncCacheApi
 import play.api.i18n.{ I18nSupport, Messages }
 import play.api.libs.json.Json
 import utils.auth.{ DefaultEnv, WithProvider }
+import util.CacheUtil
 
 import scala.concurrent.Future
 import scala.util.parsing.json.JSONObject
@@ -32,7 +34,7 @@ import scala.util.parsing.json.JSONObject
 @Singleton
 class PetInfoRegistorController @Inject() (
   gender: Gender, petKind: PetKind, petSearchInfo: PetSearchInfo,
-  cc: ControllerComponents, silhouette: Silhouette[DefaultEnv])(
+  cc: ControllerComponents, silhouette: Silhouette[DefaultEnv], cache: SyncCacheApi)(
   implicit
   assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
   extends AbstractController(cc) with I18nSupport {
@@ -52,13 +54,14 @@ class PetInfoRegistorController @Inject() (
    */
   def init = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+      cache.remove("PetInfoRegistorForm")
       Ok(views.html.petInfoRegstor(
         true,
         gender.genderList,
         petKind.petKindList,
         formVal,
         request.identity,
-        routes.PetInfoRegistorController.regist))
+        routes.PetInfoRegistorController.comfirm))
   }
 
   def edit(id: Long) = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
@@ -85,15 +88,8 @@ class PetInfoRegistorController @Inject() (
         routes.PetInfoRegistorController.update))
   }
 
-  /**
-   * 登録ボタン押下処理
-   * @return
-   */
-  def regist = silhouette.SecuredAction(parse.multipartFormData) {
+  def comfirm = silhouette.SecuredAction(parse.multipartFormData) {
     implicit request =>
-      println("start")
-      println(formVal)
-
       formVal.bindFromRequest.fold(
         errorForm => {
           Ok(views.html.petInfoRegstor(
@@ -102,35 +98,11 @@ class PetInfoRegistorController @Inject() (
             petKind.petKindList,
             errorForm,
             request.identity,
-            routes.PetInfoRegistorController.regist))
+            routes.PetInfoRegistorController.comfirm))
         },
         requestForm => {
-          println("push button!!!!")
-
-          request.body.file("petImg").map { picture =>
-            import java.io.File
-            import org.joda.time.{ DateTime, DateTimeZone }
-
-            val juDate = new java.util.Date()
-            val dt = new DateTime(juDate)
-
-            val filename = dt.getMillis.toString + "_" + picture.filename
-            val contentType = picture.contentType
-
-            picture.ref.moveTo(new File(s"public/tmp/picture/$filename"))
-            //            println("resize -> " + picture.filename)
-            //            Process("convert -thumbnail 220x220 -quality 70 " + s"public/tmp/picture/$filename") run
-
-            println("File Upload OK : " + filename)
-            Ok("File uploaded")
-
-            var res = petSearchInfo.insert(requestForm, request.identity.userID.toString, filename)
-            Redirect(routes.PetInfoRegistorController.complete)
-
-          }.getOrElse {
-            Redirect(routes.PetInfoRegistorController.complete).flashing(
-              "error" -> "Missing file")
-          }
+          CacheUtil.set(cache, "PetInfoRegistorForm", requestForm)
+          Ok(views.html.petInfoPreview(requestForm, request.identity, routes.PetInfoPreviewController.regist))
         })
   }
 

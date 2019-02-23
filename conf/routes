@@ -22,7 +22,9 @@ GET         /petInfoEdit                     controllers.PetInfoRegistorControll
 GET         /petInfoDisplay/:id              controllers.PetInfoDisplayController.init(id:Long)
 GET         /petInfoDisplay/:id/noAuth       controllers.PetInfoDisplayController.noAuth(id:Long)
 +nocsrf
-POST        /regist                          controllers.PetInfoRegistorController.regist
+POST        /regist                          controllers.PetInfoPreviewController.regist
++nocsrf
+POST        /petInfoPreview                  controllers.PetInfoRegistorController.comfirm
 +nocsrf
 POST        /update                          controllers.PetInfoRegistorController.update
 GET         /petInfoRegistorComplete         controllers.PetInfoRegistorController.complete

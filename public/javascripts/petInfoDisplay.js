@@ -30,3 +30,7 @@ function dispayMap(lat, lng) {
         document.getElementById('map-canvas').textContent = "地図情報が登録されていません。"
     }
 }
+
+$('#back').on('click', function() {
+    window.history.back(-1);return false;
+})
