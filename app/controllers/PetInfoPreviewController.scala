@@ -34,7 +34,15 @@ class PetInfoPreviewController @Inject() (
    */
   def regist = silhouette.SecuredAction(parse.multipartFormData) {
     implicit request =>
-      var res = petSearchInfo.insert(CacheUtil.getPetRegistorForm(cache, request.identity.userID.toString).get, request.identity.userID.toString, "")
+      val uuid = request.session.get("userId").get;
+      val imagePath = CacheUtil.getImagePath(cache, uuid)
+
+      val pathList = imagePath match {
+        case Some(x) => x.path
+        case None => List("")
+      }
+
+      petSearchInfo.insert(CacheUtil.getPetRegistorForm(cache, uuid.toString).get, uuid, pathList)
       Redirect(routes.PetInfoRegistorController.complete)
   }
 }

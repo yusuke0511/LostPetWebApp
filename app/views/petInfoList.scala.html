@@ -21,7 +21,7 @@ implicit assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil, messages: Message
     <table>
         @for(d <- petInfoList) {
         <tr>
-            <td><img src="/assets/@d("image_path")" width="100" height="100"></td>
+            <td><img src="/assets/tmp/picture/@d("image_path")" width="100" height="100"></td>
             <td><a href="/petInfoDisplay/@d("id")">@d("name")</a></td>
             <td>@util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))</td>
             <td>@util.MessageUtil.getPropetyMessage("pref." + d("pref"))</td>

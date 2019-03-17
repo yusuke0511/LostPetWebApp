@@ -55,18 +55,18 @@
                 <tbody>
                 @for(d <- petInfoList) {
                 <tr>
-                    <td><img src="/assets/@d("image_path")" width="65" height="65"></td>
+                    <td><img src="/assets/tmp/picture/@d("image_path")" width="65" height="65"></td>
                     <td><a href="/petInfoDisplay/@d("id")">@d("name")</a></td>
                     <td>@util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))</td>
                     <td>@util.MessageUtil.getPropetyMessage("pref." + d("pref"))</td>
                     <td>
                         <form action="" id="update-form@d("id")" data-id="@d("id")">
-                            <input type="button" id="update" class="btn btn-info" value="更新" />
+                            <input type="button" id="update@d("id")" class="btn btn-info" value="更新" />
                         </form>
                     </td>
                     <td>
                         <form action="" id="delete-form@d("id")" data-id="@d("id")">
-                            <input type="button" id="delete" class="btn btn-warning" value="削除" />
+                            <input type="button" name="delete@d("id")" class="btn btn-warning" value="削除" />
                         </form>
                     </td>
                 </tr>

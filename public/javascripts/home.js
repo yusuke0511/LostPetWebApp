@@ -1,13 +1,13 @@
-$('#update').on('click', function() {
-    var id = $(this).parent().data("id");
+$("[id^=update]").on('click', function() {
+    var id = $(this).data("id");
     console.log(id + "を更新しますか");
 
     location.href="/petInfoEdit?id=" + id;
 })
 
 $(function() {
-  $("#delete").click(function() {
-    var id = $(this).parent().data("id");
+  $("[id^=delete]").click(function() {
+    var id = $(this).data("id");
 
     $("#cdl1").dialog({
       modal:true,

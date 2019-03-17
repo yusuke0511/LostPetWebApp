@@ -19,7 +19,7 @@ implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: Me
 <br/>
 <div class="container">
     @for(d <- petInfoList) {
-    <img src="/assets/@d("image_path")" width="300" height="300">
+    <img src="/assets/tmp/picture/@d("image_path")" width="300" height="300">
     <br/>
     <div class="form-group">
         <label id="nameLabel" class="control-label col-xs-6">ペットの名前</label>

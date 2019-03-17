@@ -62,7 +62,7 @@ class PetSearchInfo @Inject() (db: Database) {
     }
   }
 
-  def insert(r: PetInfoRegistorForm, userId: String, image_path: String): Option[Long] = {
+  def insert(r: PetInfoRegistorForm, userId: String, image_path: List[String]): Option[Long] = {
     db.withConnection { implicit c =>
       SQL(
         """
@@ -84,7 +84,7 @@ class PetSearchInfo @Inject() (db: Database) {
           'lat -> r.lat,
           'lng -> r.lng,
           'place -> r.place,
-          'image_path -> image_path).executeInsert()
+          'image_path -> image_path(0)).executeInsert()
     }
   }
 }
