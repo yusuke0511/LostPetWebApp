@@ -1,0 +1,55 @@
+@import helper._
+@import forms.PetInfoRegistorForm
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(errorFlg:Boolean
+    ,user: models.User
+    ,imagePath: Option[models.ImagePath]
+    ,send: play.api.mvc.Call)(implicit assetsFinder: AssetsFinder,
+request: RequestHeader,
+messagesProvider: MessagesProvider,
+messages: Messages,
+webJarsUtil: WebJarsUtil)
+
+@main("ペット捜索情報入力", assetsFinder, webJarsUtil) {
+
+@header("", Some(user))
+
+<h2>画像をアップロードする</h2>
+@if(errorFlg) {
+画像をアップロードしてください。
+５枚までアップロードすることができます。
+} else {
+入力内容に誤りがあります。内容を確認して再度登録してください。
+}
+<br/>
+<div class="container">
+
+    @form(action = routes.PetInfoImageRegistorController.upload, 'name -> "imageForm", 'enctype -> "multipart/form-data"){
+        <div id="dropArea">Drop or Click here!</div>
+        <!--<input id="fileInput" name="fileInput" type="file" accept="image/*" multiple>-->
+        <input id="fileInput" name="fileInput" type="file" accept="image/*">
+        <div id="petImg"></div>
+    }
+    @form(action = routes.PetInfoImageRegistorController.comfirm, 'enctype -> "multipart/form-data") {
+        <input type="button" id="back" class="btn btn-primary" value="登録内容を修正する"/>
+        <input type="submit" class="btn btn-primary" value="登録内容を確認する"/>
+    }
+    @if(imagePath.isDefined) {
+    <br>
+    @form(action = routes.PetInfoImageRegistorController.deleteImage, 'enctype -> "multipart/form-data") {
+            @for((path, cnt) <- imagePath.get.path.zipWithIndex) {
+            <img src="assets/tmp/picture/@path" width="300" height="300"><br>
+            <input type="submit" id="delete@cnt" class="btn btn-primary" value="写真を削除する"/>
+            }
+        }
+    }
+</div>
+<script src="@routes.Assets.versioned("javascripts/petInfoImageRegistor.js")" type="text/javascript"></script>
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/petInfoImageRegistor.css")">
+}
+

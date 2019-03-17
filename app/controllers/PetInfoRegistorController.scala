@@ -1,6 +1,5 @@
 package controllers
 
-import com.mohiva.play.silhouette._
 import com.mohiva.play.silhouette.api.Silhouette
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
@@ -10,16 +9,12 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import forms.PetInfoRegistorForm
-import models.User
+import models.ImagePath
 import org.webjars.play.WebJarsUtil
 import play.api.cache.SyncCacheApi
 import play.api.i18n.{ I18nSupport, Messages }
-import play.api.libs.json.Json
 import utils.auth.{ DefaultEnv, WithProvider }
 import util.CacheUtil
-
-import scala.concurrent.Future
-import scala.util.parsing.json.JSONObject
 
 /**
  * ペット迷子情報登録画面
@@ -54,18 +49,22 @@ class PetInfoRegistorController @Inject() (
    */
   def init = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-      cache.remove("PetInfoRegistorForm")
+
+      CacheUtil.deletePetRegistInfoCache(cache, request.identity.userID.toString)
+
       Ok(views.html.petInfoRegstor(
         true,
         gender.genderList,
         petKind.petKindList,
         formVal,
         request.identity,
-        routes.PetInfoRegistorController.comfirm))
+        routes.PetInfoRegistorController.imageUpload)).withSession("userId" -> request.identity.userID.toString)
   }
 
   def edit(id: Long) = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+      CacheUtil.deletePetRegistInfoCache(cache, request.identity.userID.toString)
+
       val result: List[Map[String, Any]] = petSearchInfo.getPetInfoList(id)
       val petRegistData = result.apply(0)
 
@@ -85,10 +84,10 @@ class PetInfoRegistorController @Inject() (
         petKind.petKindList,
         formVal.fill(p),
         request.identity,
-        routes.PetInfoRegistorController.update))
+        routes.PetInfoImageRegistorController.comfirm()))
   }
 
-  def comfirm = silhouette.SecuredAction(parse.multipartFormData) {
+  def imageUpload = silhouette.SecuredAction(parse.multipartFormData) {
     implicit request =>
       formVal.bindFromRequest.fold(
         errorForm => {
@@ -98,15 +97,17 @@ class PetInfoRegistorController @Inject() (
             petKind.petKindList,
             errorForm,
             request.identity,
-            routes.PetInfoRegistorController.comfirm))
+            routes.PetInfoRegistorController.imageUpload))
         },
         requestForm => {
-          CacheUtil.set(cache, "PetInfoRegistorForm", requestForm)
-          Ok(views.html.petInfoPreview(requestForm, request.identity, routes.PetInfoPreviewController.regist))
+          val uuid = request.session.get("userId").get;
+          CacheUtil.set(cache, uuid + CacheUtil.KEY_PetInfoRegistorForm, requestForm)
+          CacheUtil.set(cache, uuid + CacheUtil.KEY_LoginInfo, request.identity)
+          Ok(views.html.petInfoImageRegstor(true, request.identity,
+            None,
+            routes.PetInfoImageRegistorController.comfirm))
         })
   }
-
-  def update = TODO
 
   def complete = Action {
     Ok(views.html.petInfoRegistorComplete(""))

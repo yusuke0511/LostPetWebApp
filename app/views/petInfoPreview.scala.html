@@ -6,7 +6,7 @@
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
 
-@(requestForm:PetInfoRegistorForm,user: models.User, send: play.api.mvc.Call)(
+@(requestForm:PetInfoRegistorForm,imagePath: Option[models.ImagePath], user: models.User, send: play.api.mvc.Call)(
 implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: MessagesProvider, webJarsUtil: WebJarsUtil)
 
 @main("プレビュー", assetsFinder, webJarsUtil) {
@@ -15,7 +15,11 @@ implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: Me
 <br/>
 @form(action = send,  'enctype -> "multipart/form-data"){
 <div class="container">
-    <!--<img src="/assets/requestForm("image_path")" width="300" height="300">-->
+    @if(imagePath.isDefined) {
+        @for(path <- imagePath.get.path) {
+         <img src="assets/tmp/picture/@path" width="300" height="300">
+        }
+    }
     <br/>
     <div class="form-group">
         <label id="nameLabel" class="control-label col-xs-6">ペットの名前</label>

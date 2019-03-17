@@ -24,9 +24,13 @@ GET         /petInfoDisplay/:id/noAuth       controllers.PetInfoDisplayControlle
 +nocsrf
 POST        /regist                          controllers.PetInfoPreviewController.regist
 +nocsrf
-POST        /petInfoPreview                  controllers.PetInfoRegistorController.comfirm
+POST        /imageUpload                     controllers.PetInfoRegistorController.imageUpload
 +nocsrf
-POST        /update                          controllers.PetInfoRegistorController.update
+POST        /upload                          controllers.PetInfoImageRegistorController.upload
+GET         /imagePreview                    controllers.PetInfoImageRegistorController.imagePreview
+GET         /deleteImage                     controllers.PetInfoImageRegistorController.deleteImage
++nocsrf
+POST        /petInfoPreview                  controllers.PetInfoImageRegistorController.comfirm
 GET         /petInfoRegistorComplete         controllers.PetInfoRegistorController.complete
 
 # Map static resources from the /public folder to the /assets URL path

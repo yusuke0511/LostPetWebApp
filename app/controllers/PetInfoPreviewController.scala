@@ -34,29 +34,7 @@ class PetInfoPreviewController @Inject() (
    */
   def regist = silhouette.SecuredAction(parse.multipartFormData) {
     implicit request =>
-      println("start")
-      println("push button!!!!")
-
-      request.body.file("petImg").map { picture =>
-        import java.io.File
-        import org.joda.time.{ DateTime, DateTimeZone }
-
-        val juDate = new java.util.Date()
-        val dt = new DateTime(juDate)
-
-        val filename = dt.getMillis.toString + "_" + picture.filename
-        val contentType = picture.contentType
-
-        picture.ref.moveTo(new File(s"public/tmp/picture/$filename"))
-        //            println("resize -> " + picture.filename)
-        //            Process("convert -thumbnail 220x220 -quality 70 " + s"public/tmp/picture/$filename") run
-
-        println("File Upload OK : " + filename)
-        Ok("File uploaded")
-
-      }
-
-      var res = petSearchInfo.insert(CacheUtil.getPetRegistorForm(cache).get, request.identity.userID.toString, "")
+      var res = petSearchInfo.insert(CacheUtil.getPetRegistorForm(cache, request.identity.userID.toString).get, request.identity.userID.toString, "")
       Redirect(routes.PetInfoRegistorController.complete)
   }
 }
