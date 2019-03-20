@@ -19,30 +19,53 @@ implicit assetsFinder: AssetsFinder,request: RequestHeader, messagesProvider: Me
         @for(path <- imagePath.get.path) {
          <img src="assets/tmp/picture/@path" width="300" height="300">
         }
+    }else{
+    <img src="assets/images/noImage.png" width="300" height="300">
     }
     <br/>
-    <div class="form-group">
-        <label id="nameLabel" class="control-label col-xs-6">ペットの名前</label>
-        @requestForm.name
-    </div>
-    <div class="form-group">
-        <label id="petKindLabel" class="control-label col-xs-6">ペットの種類</label>
-        @util.MessageUtil.getPropetyMessage("pet.type." + requestForm.petKind)
-    </div>
-    <div class="form-group">
-        <label id="genderLabel" class="control-label col-xs-6">ペットの性別</label>
-        @util.MessageUtil.getPropetyMessage("gender." + requestForm.gender)
-    </div>
-    <div class="form-group">
-        <label id="featureLabel" class="control-label col-xs-6">ペットの特徴</label>
-        <div>
-            @requestForm.feature
-        </div>
-    </div>
-    <div class="from-group">
-        <label id="prefLabel" class="control-label col-xs-6">都道府県</label>
-        @util.MessageUtil.getPropetyMessage("pref." + requestForm.pref)
-    </div>
+    <table width="90%">
+        <tr>
+            <td>
+                <label id="nameLabel" class="control-label col-xs-6">ペットの名前</label>
+            </td>
+            <td>
+                @requestForm.name
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="petKindLabel" class="control-label col-xs-6">ペットの種類</label>
+            </td>
+            <td>
+                @util.MessageUtil.getPropetyMessage("pet.type." + requestForm.petKind)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="genderLabel" class="control-label col-xs-6">ペットの性別</label>
+            </td>
+            <td>
+                @util.MessageUtil.getPropetyMessage("gender." + requestForm.gender)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="featureLabel" class="control-label col-xs-6">ペットの特徴</label>
+            </td>
+            <td>
+                @requestForm.feature
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="prefLabel" class="control-label col-xs-6">都道府県</label>
+            </td>
+            <td>
+                @util.MessageUtil.getPropetyMessage("pref." + requestForm.pref)
+            </td>
+        </tr>
+    </table>
+
     <div class="form-group">
         <label id="lostPlaceLabel" class="control-label col-xs-6">迷子になった場所</label>
         @requestForm.place
