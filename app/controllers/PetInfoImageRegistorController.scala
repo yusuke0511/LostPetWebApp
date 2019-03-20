@@ -28,7 +28,7 @@ class PetInfoImageRegistorController @Inject() (
   assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
   extends AbstractController(cc) with I18nSupport {
 
-  val logger = Logger("application")
+  val logger = Logger(this.getClass)
 
   def comfirm = silhouette.SecuredAction(parse.multipartFormData) {
     implicit request =>

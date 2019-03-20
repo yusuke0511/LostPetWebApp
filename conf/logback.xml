@@ -10,6 +10,13 @@
     </encoder>
   </appender>
 
+  <appender name="APPLICATION_FILE" class="ch.qos.logback.core.FileAppender">
+    <file>${application.home:-.}/logs/lostpet.log</file>
+    <encoder>
+      <pattern>%date [%level] from %logger in %thread - %message%n%xException</pattern>
+    </encoder>
+  </appender>
+
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%coloredLevel %logger{15} - %message%n%xException{10}</pattern>
@@ -26,6 +33,19 @@
 
   <logger name="play" level="INFO" />
   <logger name="application" level="DEBUG" />
+  <logger name="controllers" level="DEBUG">
+          <appender-ref ref="APPLICATION_FILE"/>
+          <appender-ref ref="STDOUT"/>
+  </logger>
+  <logger name="util" level="DEBUG">
+    <appender-ref ref="APPLICATION_FILE"/>
+    <appender-ref ref="STDOUT"/>
+  </logger>
+  <logger name="services" level="DEBUG">
+    <appender-ref ref="APPLICATION_FILE"/>
+    <appender-ref ref="STDOUT"/>
+  </logger>
+
 
   <!-- Off these ones as they are annoying, and anyway we manage configuration ourselves -->
   <logger name="com.avaje.ebean.config.PropertyMapLoader" level="OFF" />

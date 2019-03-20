@@ -2,13 +2,14 @@ package controllers.auth
 
 import javax.inject.Inject
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
-import com.mohiva.play.silhouette.api.{ LogoutEvent, Silhouette }
+import com.mohiva.play.silhouette.api.{LogoutEvent, Silhouette}
 import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
-import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents }
+import play.api.mvc.{AbstractController, AnyContent, ControllerComponents}
 import utils.auth.DefaultEnv
 import models.pet.PetSearchInfo
+import play.api.Logger
 
 import scala.concurrent.Future
 
@@ -28,6 +29,8 @@ class ApplicationController @Inject() (
   webJarsUtil: WebJarsUtil,
   assets: AssetsFinder) extends AbstractController(components) with I18nSupport {
 
+  val log = Logger(this.getClass)
+
   /**
    * Handles the index action.
    *
@@ -44,7 +47,7 @@ class ApplicationController @Inject() (
 
     val user_id = request.identity.userID.toString
     val res = petSearchInfo.deletePetInfoList(user_id, id.toInt)
-    println("削除件数:" + res + " :user_id -> " + user_id + " :id -> " + id)
+    log.info("削除件数:" + res + " :user_id -> " + user_id + " :id -> " + id)
 
     Future.successful(
       Ok(

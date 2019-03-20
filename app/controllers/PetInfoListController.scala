@@ -31,7 +31,6 @@ class PetInfoListController @Inject() (petSearchInfo: PetSearchInfo, cc: Control
 
   def init = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-      println(request.identity)
       Ok(views.html.petInfoList(petSearchInfo.getPetInfoList, request.identity))
   }
 

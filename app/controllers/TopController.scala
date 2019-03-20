@@ -21,7 +21,6 @@ class TopController @Inject() (cc: ControllerComponents, silhouette: Silhouette[
 
   def init = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-      println(request.identity)
       Ok(views.html.top("", request.identity))
   }
 }

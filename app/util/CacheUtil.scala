@@ -1,11 +1,14 @@
 package util
 import forms.PetInfoRegistorForm
 import models.{ ImagePath, User }
+import play.api.Logger
 import play.api.cache._
 
 import scala.concurrent.duration._
 
 object CacheUtil {
+
+  val log = Logger(this.getClass)
 
   val KEY_PetInfoRegistorForm = "PetInfoRegistorForm"
   val KEY_LoginInfo = "LoginInfo"
@@ -13,7 +16,7 @@ object CacheUtil {
 
   def set(cache: SyncCacheApi, key: String, obj: Any): Unit = {
     cache.set(key, obj, 30.minute)
-    println("Cache Key => " + key + " : Cache Value => " + obj)
+    log.debug("Cache Key => " + key + " : Cache Value => " + obj)
   }
 
   def get(cache: SyncCacheApi, key: String) = cache.get(key)
