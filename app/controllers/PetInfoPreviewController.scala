@@ -14,7 +14,7 @@ import play.api.data.Forms._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import util.CacheUtil
-import utils.auth.{DefaultEnv, WithProvider}
+import utils.auth.{ DefaultEnv, WithProvider }
 
 /**
  * ペット迷子情報画面

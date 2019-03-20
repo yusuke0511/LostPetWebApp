@@ -55,7 +55,12 @@
                 <tbody>
                 @for(d <- petInfoList) {
                 <tr>
+                    @if(d("image_path").equals("")) {
+                    <td><img src="/assets/images/noImage.png" width="65" height="65"></td>
+                    } else {
                     <td><img src="/assets/tmp/picture/@d("image_path")" width="65" height="65"></td>
+                    }
+
                     <td><a href="/petInfoDisplay/@d("id")">@d("name")</a></td>
                     <td>@util.MessageUtil.getPropetyMessage("pet.type." + d("kind"))</td>
                     <td>@util.MessageUtil.getPropetyMessage("pref." + d("pref"))</td>
