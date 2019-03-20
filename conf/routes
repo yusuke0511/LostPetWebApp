@@ -28,7 +28,8 @@ POST        /imageUpload                     controllers.PetInfoRegistorControll
 +nocsrf
 POST        /upload                          controllers.PetInfoImageRegistorController.upload
 GET         /imagePreview                    controllers.PetInfoImageRegistorController.imagePreview
-GET         /deleteImage                     controllers.PetInfoImageRegistorController.deleteImage
++nocsrf
+POST        /deleteImage                     controllers.PetInfoImageRegistorController.deleteImage
 +nocsrf
 POST        /petInfoPreview                  controllers.PetInfoImageRegistorController.comfirm
 GET         /petInfoRegistorComplete         controllers.PetInfoRegistorController.complete

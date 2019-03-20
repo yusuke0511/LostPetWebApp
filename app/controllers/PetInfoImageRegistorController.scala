@@ -4,10 +4,12 @@ import java.nio.file.Paths
 
 import com.mohiva.play.silhouette.api.Silhouette
 import play.api.libs.concurrent.CustomExecutionContext
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject._
 import models.ImagePath
 import org.webjars.play.WebJarsUtil
+import play.api.Logger
 import play.api.cache.SyncCacheApi
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -15,6 +17,7 @@ import util.CacheUtil
 import utils.auth.DefaultEnv
 
 import scala.concurrent.Future
+import scala.reflect.io.File
 import scala.sys.process.Process
 
 @Singleton
@@ -24,6 +27,8 @@ class PetInfoImageRegistorController @Inject() (
   implicit
   assetsFinder: AssetsFinder, webJarsUtil: WebJarsUtil)
   extends AbstractController(cc) with I18nSupport {
+
+  val logger = Logger("application")
 
   def comfirm = silhouette.SecuredAction(parse.multipartFormData) {
     implicit request =>
@@ -56,7 +61,7 @@ class PetInfoImageRegistorController @Inject() (
            */
           val command = "convert -auto-orient -thumbnail 220x220 -quality 70 -strip ";
           Process(command + s"upload/$filename" + " " + s"public/tmp/picture/$filename").run
-          println("File Upload OK : " + filename)
+          logger.debug("File Upload OK : " + filename)
 
           var imagePath = CacheUtil.getImagePath(cache, uuid)
           imagePath match {
@@ -104,9 +109,19 @@ class PetInfoImageRegistorController @Inject() (
 
   def deleteImage = Action {
     implicit request =>
+      val id = request.body.asFormUrlEncoded.get("imageId")(0).toInt
       val uuid = request.session.get("userId").get
       val imagePath = CacheUtil.getImagePath(cache, uuid)
-      CacheUtil.set(cache, uuid + CacheUtil.KEY_ImagePath, imagePath.get.path.drop(0))
+      val filePath = imagePath.getOrElse(new ImagePath(List("")))
+
+      if (filePath.path.size > id) {
+        val imageFile = File("public/tmp/picture/" + filePath.path(id))
+        imageFile.delete
+
+        // 削除対象のパスを抜いたリストの再作成
+        val path = imagePath.get.path.filter(!_.equals(imagePath.get.path(id)))
+        CacheUtil.set(cache, uuid + CacheUtil.KEY_ImagePath, ImagePath.apply(path.map(_.toString)))
+      }
 
       Ok(views.html.petInfoImageRegstor(
         true,

@@ -103,3 +103,14 @@ document.addEventListener('DOMContentLoaded', function () {
 $('#back').on('click', function() {
     location.href="/petInfoRegistor";
 })
+
+$(function(){
+    console.log("画面起動")
+    var uploadMaxFlg = $("#uploadMaxFlg").val();
+    if (uploadMaxFlg) {
+        console.log("最大アップロード数に到達")
+        $("#dropArea").hide();
+        $("#fileInput").hide();
+    }
+    console.log("画面起動処理終了")
+});
