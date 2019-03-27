@@ -2,7 +2,7 @@ import com.typesafe.sbt.SbtScalariform._
 import scalariform.formatter.preferences._
 import sbt.Resolver
 
-name := """LostPatWebapp"""
+name := """LostPetWebapp"""
 
 version := "1.0-SNAPSHOT"
 
@@ -28,6 +28,9 @@ libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.0"
 libraryDependencies += "com.typesafe.play" %% "play-iteratees" % "2.6.1"
 libraryDependencies += "com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1"
 libraryDependencies += "com.typesafe" % "config" % "1.3.1" //Road Config File
+//Twitter4j
+// https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
+libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.7"
 
 enablePlugins(DockerPlugin, JavaAppPackaging)
 // Dockerfileに書く内容
